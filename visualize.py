@@ -8,27 +8,41 @@ def draw_states(A):
 
     n = len(A)
 
+    states = []
+
     for i in range(n):
-        G.add_node("State " + str(i))
+
+        state = "State " + str(i)
+        states.append(state)
+
+        G.add_node(state)
+
 
     for i in range(n):
         for j in range(n):
 
-            value = round(A[i][j], 2)
+            prob = round(A[i][j],2)
 
             G.add_edge(
-                "State " + str(i),
-                "State " + str(j),
-                weight=value
+                states[i],
+                states[j],
+                weight=prob
             )
 
-    pos = nx.circular_layout(G)
 
-    nx.draw(G, pos,
-            with_labels=True,
-            node_size=2500)
+    pos = nx.spring_layout(G)
 
-    labels = nx.get_edge_attributes(G, 'weight')
+    plt.figure(figsize=(7,6))
+
+    nx.draw(
+        G,
+        pos,
+        with_labels=True,
+        node_size=3000,
+        font_size=12
+    )
+
+    labels = nx.get_edge_attributes(G,'weight')
 
     nx.draw_networkx_edge_labels(
         G,
@@ -36,6 +50,7 @@ def draw_states(A):
         edge_labels=labels
     )
 
-    plt.title("HMM State Transition Diagram")
+
+    plt.title("Hidden Markov Model State Transition Diagram")
 
     plt.show()
